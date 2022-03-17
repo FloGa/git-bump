@@ -11,4 +11,5 @@ readme = "README.md"
 license = "MIT"
 
 [dependencies]
+home = "0.5.3"
 mlua = { version = "0.7", features = ["lua54", "vendored"] }
