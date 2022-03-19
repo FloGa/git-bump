@@ -51,6 +51,12 @@ pub fn bump() -> Result<()> {
     }
 
     for (file, f) in map {
+        let file = workdir.join(file);
+
+        if !file.exists() {
+            continue;
+        }
+
         let mut contents = f
             .call::<_, String>(version.clone())
             .map_err(|source| Error::LuaExecutionFailed { source })?;
@@ -58,7 +64,7 @@ pub fn bump() -> Result<()> {
             contents.push('\n')
         }
 
-        fs::write(workdir.join(file), contents).map_err(|source| Error::WriteFailed { source })?;
+        fs::write(file, contents).map_err(|source| Error::WriteFailed { source })?;
     }
 
     Ok(())
