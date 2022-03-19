@@ -5,6 +5,8 @@ use std::fs;
 use mlua::prelude::*;
 use mlua::Function;
 
+mod error;
+
 pub fn bump() -> LuaResult<()> {
     let repository = git2::Repository::discover(".").expect("Not a Git repository");
 
