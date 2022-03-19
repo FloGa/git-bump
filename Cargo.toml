@@ -14,3 +14,4 @@ license = "MIT"
 git2 = "0.14.2"
 home = "0.5.3"
 mlua = { version = "0.7", features = ["lua54", "vendored"] }
+thiserror = "1.0.30"
