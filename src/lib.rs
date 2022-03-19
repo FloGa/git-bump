@@ -5,13 +5,16 @@ use std::fs;
 use mlua::prelude::*;
 use mlua::Function;
 
-pub fn bump() -> LuaResult<()> {
-    let repository = git2::Repository::discover(".").expect("Not a Git repository");
+pub use crate::{error::Error, error::Result};
 
-    let workdir = match repository.workdir() {
-        Some(workdir) => workdir,
-        None => panic!("git-bump is not supported on bare repositories"),
-    };
+mod error;
+
+pub fn bump() -> Result<()> {
+    let repository = git2::Repository::discover(".").map_err(|_| Error::NotARepository)?;
+
+    let workdir = repository
+        .workdir()
+        .ok_or_else(|| Error::BareRepositoryNotSupported)?;
 
     let bump_configs = {
         let config_user =
@@ -26,10 +29,10 @@ pub fn bump() -> LuaResult<()> {
     };
 
     if bump_configs.is_empty() {
-        panic!("No valid config files found")
+        return Err(Error::NoValidConfigFound);
     }
 
-    let version = args().nth(1).unwrap();
+    let version = args().nth(1).ok_or(Error::NoVersionGiven)?;
 
     let lua = Lua::new();
 
@@ -39,20 +42,23 @@ pub fn bump() -> LuaResult<()> {
         let chunk = match content {
             Ok(content) => lua.load(&content).eval::<HashMap<String, Function>>(),
             Err(_) => continue,
-        };
+        }
+        .map_err(|source| Error::LuaLoadingFailed { source })?;
 
-        for (file, func) in chunk? {
+        for (file, func) in chunk {
             map.insert(file, func);
         }
     }
 
     for (file, f) in map {
-        let mut contents = f.call::<_, String>(version.clone())?;
+        let mut contents = f
+            .call::<_, String>(version.clone())
+            .map_err(|source| Error::LuaExecutionFailed { source })?;
         if !contents.ends_with('\n') {
             contents.push('\n')
         }
 
-        fs::write(workdir.join(file), contents).unwrap();
+        fs::write(workdir.join(file), contents).map_err(|source| Error::WriteFailed { source })?;
     }
 
     Ok(())
