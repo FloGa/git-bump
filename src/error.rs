@@ -17,6 +17,8 @@ pub enum Error {
     LuaExecutionFailed { source: mlua::Error },
     #[error(transparent)]
     LuaError(#[from] mlua::Error),
+    #[error("Failed to read to file: {source}")]
+    ReadFailed { source: std::io::Error },
     #[error("Failed to write to file: {source}")]
     WriteFailed { source: std::io::Error },
     #[error(transparent)]
