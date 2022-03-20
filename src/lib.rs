@@ -57,8 +57,10 @@ pub fn bump() -> Result<()> {
             continue;
         }
 
+        let contents = fs::read_to_string(&file).map_err(|source| Error::ReadFailed { source })?;
+
         let mut contents = f
-            .call::<_, String>(version.clone())
+            .call::<_, String>((version.clone(), contents))
             .map_err(|source| Error::LuaExecutionFailed { source })?;
         if !contents.ends_with('\n') {
             contents.push('\n')
