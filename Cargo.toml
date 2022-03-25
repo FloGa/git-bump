@@ -7,7 +7,7 @@ edition = "2021"
 description = "Use Lua scripts to quickly bump versions in files."
 repository = "https://github.com/FloGa/git-bump"
 readme = "README.md"
-#categories = []
+categories = ["cli", "git", "utility"]
 license = "MIT"
 
 [dependencies]
