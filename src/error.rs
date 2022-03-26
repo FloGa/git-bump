@@ -15,6 +15,10 @@ pub enum Error {
     LuaLoadingFailed { source: mlua::Error },
     #[error("Failed to execute Lua code: {source}")]
     LuaExecutionFailed { source: mlua::Error },
+    #[error("Failed to execute pre function: {source}")]
+    LuaPreFuncFailed { source: mlua::Error },
+    #[error("Failed to execute post function: {source}")]
+    LuaPostFuncFailed { source: mlua::Error },
     #[error(transparent)]
     LuaError(#[from] mlua::Error),
     #[error("Failed to read to file: {source}")]
