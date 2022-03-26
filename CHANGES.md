@@ -1,5 +1,47 @@
 # Changes since latest release
 
+-   Add two additional errors for hooks
+
+-   Support pre and post hook functions
+
+    Along with the new contents for a specified file, one can also define
+    hook functions that should be run *before* or *after* the new content is
+    written to the file.
+
+    The `pre_func` could be used, for example, to create a backup of the
+    file prior to updating it. The `post_func` might be used to do some
+    house keeping with modified config files.
+
+    The hooks must be returned as a Lua table with the members `pre_func`
+    and `post_func`. Both members are optional. If a hook function does not
+    exist, it will be silently ignored.
+
+    Example:
+
+    ```lua
+    return {
+        VERSION = function(version)
+            local os = require("os")
+
+            local pre_func = function()
+                os.execute("cp VERSION VERSION.old")
+            end
+
+            local post_func = function()
+                os.execute("git commit -m 'Update VERSION' VERSION")
+            end
+
+            return version, {pre_func = pre_func, post_func = post_func}
+        end
+    }
+    ```
+
+-   Add post_func example to git-bump.lua
+
+    This example will run `cargo check` after updating the version in
+    Cargo.toml. Not only will this validate the modified config, it will
+    also update Cargo.lock accordingly.
+
 # Changes in 0.1.0
 
 Initial release.
