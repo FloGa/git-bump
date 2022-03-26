@@ -188,14 +188,30 @@ pub fn bump() -> Result<()> {
 
         let contents = fs::read_to_string(&file).map_err(|source| Error::ReadFailed { source })?;
 
-        let mut contents = f
-            .call::<_, String>((version.clone(), contents))
+        let (mut contents, hooks) = f
+            .call::<_, (String, Option<HashMap<String, Function>>)>((version.clone(), contents))
             .map_err(|source| Error::LuaExecutionFailed { source })?;
         if !contents.ends_with('\n') {
             contents.push('\n')
         }
 
+        if let Some(hooks) = &hooks {
+            if let Some(pre_func) = hooks.get("pre_func") {
+                pre_func
+                    .call(())
+                    .map_err(|source| Error::LuaPreFuncFailed { source })?;
+            }
+        }
+
         fs::write(file, contents).map_err(|source| Error::WriteFailed { source })?;
+
+        if let Some(hooks) = &hooks {
+            if let Some(post_func) = hooks.get("post_func") {
+                post_func
+                    .call(())
+                    .map_err(|source| Error::LuaPostFuncFailed { source })?;
+            }
+        }
     }
 
     Ok(())
