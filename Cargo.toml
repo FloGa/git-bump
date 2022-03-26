@@ -11,6 +11,8 @@ categories = ["command-line-utilities", "development-tools"]
 keywords = ["cli", "git", "utility"]
 license = "MIT"
 
+include = ["src/**/*", "LICENSE", "README.md"]
+
 [dependencies]
 git2 = { version = "0.14.2", default-features = false }
 home = "0.5.3"
