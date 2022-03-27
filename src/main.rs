@@ -1,7 +1,7 @@
-use git_bump::bump;
+use git_bump::run;
 
 fn main() {
-    if let Err(err) = bump() {
+    if let Err(err) = run() {
         eprintln!("Error: {}", err);
         std::process::exit(1);
     }

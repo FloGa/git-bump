@@ -164,17 +164,17 @@
 //! open a PR!
 
 use std::collections::HashMap;
-use std::env::args;
 use std::fs;
 
 use mlua::prelude::*;
 use mlua::Function;
 
-pub use crate::{error::Error, error::Result};
+pub use crate::{cli::run, error::Error, error::Result};
 
+mod cli;
 mod error;
 
-pub fn bump() -> Result<()> {
+pub fn bump(version: String) -> Result<()> {
     let repository = git2::Repository::discover(".").map_err(|_| Error::NotARepository)?;
 
     let workdir = repository
@@ -196,8 +196,6 @@ pub fn bump() -> Result<()> {
     if bump_configs.is_empty() {
         return Ok(());
     }
-
-    let version = args().nth(1).ok_or(Error::NoVersionGiven)?;
 
     let lua = Lua::new();
 
