@@ -172,6 +172,7 @@ use mlua::Function;
 
 pub use crate::{error::Error, error::Result};
 
+mod cli;
 mod error;
 
 pub fn bump() -> Result<()> {
