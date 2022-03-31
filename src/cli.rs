@@ -13,3 +13,9 @@ pub fn run() -> Result<()> {
     let cli = Cli::parse();
     bump(cli.version)
 }
+
+#[test]
+fn verify_app() {
+    use clap::CommandFactory;
+    Cli::command().debug_assert()
+}
