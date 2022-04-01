@@ -38,6 +38,18 @@
 //!
 //! ## Usage
 //!
+//! ```text
+//! USAGE:
+//!     git-bump <VERSION|--print-sample-config>
+//!
+//! ARGS:
+//!     <VERSION>    Version to set
+//!
+//! OPTIONS:
+//!     -h, --help                   Print help information
+//!         --print-sample-config    Print sample config file
+//! ```
+//!
 //! To bump your versions to `1.2.3`, it is as simple as:
 //!
 //! ```shell script
@@ -95,6 +107,12 @@
 //! $ git bump 1.2.3
 //! $ cat VERSION
 //! 1.2.3
+//! ```
+//!
+//! To create a sample configuration file with several ready-to-use recipes, run:
+//!
+//! ```shell script
+//! git bump --print-sample-config >.git-bump.lua
 //! ```
 //!
 //! ## Hook Functions
@@ -157,7 +175,7 @@
 //! ## Sample Functions
 //!
 //! Find the latest sample config file here:
-//! https://github.com/FloGa/git-bump/blob/develop/.git-bump.lua
+//! <https://github.com/FloGa/git-bump/blob/develop/.git-bump.lua>
 //!
 //! This is a non-exhaustive list of possible functions that can be used in your
 //! config files. If you have ideas for more default functions, don't hesitate to
@@ -174,7 +192,7 @@ pub use crate::{cli::run, error::Error, error::Result};
 mod cli;
 mod error;
 
-pub fn bump(version: String) -> Result<()> {
+fn bump(version: String) -> Result<()> {
     let repository = git2::Repository::discover(".").map_err(|_| Error::NotARepository)?;
 
     let workdir = repository
@@ -249,4 +267,8 @@ pub fn bump(version: String) -> Result<()> {
     }
 
     Ok(())
+}
+
+fn print_sample_config() {
+    println!("{}", include_str!("../.git-bump.lua"))
 }
