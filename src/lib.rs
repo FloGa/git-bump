@@ -174,7 +174,7 @@ pub use crate::{cli::run, error::Error, error::Result};
 mod cli;
 mod error;
 
-pub fn bump(version: String) -> Result<()> {
+fn bump(version: String) -> Result<()> {
     let repository = git2::Repository::discover(".").map_err(|_| Error::NotARepository)?;
 
     let workdir = repository
