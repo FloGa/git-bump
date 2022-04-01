@@ -38,6 +38,18 @@ cargo install git-bump
 
 ## Usage
 
+```text
+USAGE:
+    git-bump <VERSION|--print-sample-config>
+
+ARGS:
+    <VERSION>    Version to set
+
+OPTIONS:
+    -h, --help                   Print help information
+        --print-sample-config    Print sample config file
+```
+
 To bump your versions to `1.2.3`, it is as simple as:
 
 ```shell script
