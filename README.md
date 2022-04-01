@@ -109,6 +109,12 @@ $ cat VERSION
 1.2.3
 ```
 
+To create a sample configuration file with several ready-to-use recipes, run:
+
+```shell script
+git bump --print-sample-config >.git-bump.lua
+```
+
 ## Hook Functions
 
 Along with the new contents for a specified file, one can also define hook
