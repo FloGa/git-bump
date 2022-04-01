@@ -175,7 +175,7 @@
 //! ## Sample Functions
 //!
 //! Find the latest sample config file here:
-//! https://github.com/FloGa/git-bump/blob/develop/.git-bump.lua
+//! <https://github.com/FloGa/git-bump/blob/develop/.git-bump.lua>
 //!
 //! This is a non-exhaustive list of possible functions that can be used in your
 //! config files. If you have ideas for more default functions, don't hesitate to
