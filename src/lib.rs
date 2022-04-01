@@ -250,3 +250,7 @@ fn bump(version: String) -> Result<()> {
 
     Ok(())
 }
+
+fn print_sample_config() {
+    println!("{}", include_str!("../.git-bump.lua"))
+}
