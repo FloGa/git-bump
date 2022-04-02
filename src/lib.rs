@@ -185,7 +185,6 @@ use std::collections::HashMap;
 use std::fs;
 
 use mlua::prelude::*;
-use mlua::Function;
 
 pub use crate::{cli::run, error::Error, error::Result};
 
@@ -221,7 +220,7 @@ fn bump(version: String) -> Result<()> {
     for config in bump_configs {
         let content = fs::read_to_string(config);
         let chunk = match content {
-            Ok(content) => lua.load(&content).eval::<HashMap<String, Function>>(),
+            Ok(content) => lua.load(&content).eval::<HashMap<String, LuaFunction>>(),
             Err(_) => continue,
         }
         .map_err(|source| Error::LuaLoadingFailed { source })?;
@@ -241,7 +240,7 @@ fn bump(version: String) -> Result<()> {
         let contents = fs::read_to_string(&file).map_err(|source| Error::ReadFailed { source })?;
 
         let (mut contents, hooks) = f
-            .call::<_, (String, Option<HashMap<String, Function>>)>((version.clone(), contents))
+            .call::<_, (String, Option<HashMap<String, LuaFunction>>)>((version.clone(), contents))
             .map_err(|source| Error::LuaExecutionFailed { source })?;
         if !contents.ends_with('\n') {
             contents.push('\n')
