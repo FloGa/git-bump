@@ -33,9 +33,25 @@ return {
     ["Cargo.toml"] = function(version, content)
         -- replace the first "version" attribute, which is most likely our
         -- own, with the current version string
-        return content:gsub(
-                   'version = %b""', ('version = "%s"'):format(version), 1
-               )
+
+        content = content:gsub(
+                      'version = %b""', ('version = "%s"'):format(version), 1
+                  )
+
+        local post_func = function()
+            -- run `cargo check` on the current package, which will then also
+            -- update Cargo.lock with the new version string
+
+            local pkgid
+            do
+                local process = io.popen("cargo pkgid")
+                pkgid = process:read("a")
+                process:close()
+            end
+            os.execute(("cargo check -p %q"):format(pkgid))
+        end
+
+        return content, {post_func = post_func}
     end,
 
     VERSION = function(version)

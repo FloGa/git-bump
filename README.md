@@ -1,5 +1,9 @@
 # git-bump
 
+![Crates.io](https://img.shields.io/crates/v/git-bump)
+![docs.rs](https://img.shields.io/docsrs/git-bump)
+![Crates.io](https://img.shields.io/crates/l/git-bump)
+
 Consistently bump your version numbers with Lua scripts.
 
 ## Motivation
@@ -38,6 +42,21 @@ cargo install git-bump
 
 ## Usage
 
+<!--% !cargo --quiet run -- --help | tail -n+5 %-->
+
+```text
+USAGE:
+    git-bump <VERSION|--list-files|--print-sample-config>
+
+ARGS:
+    <VERSION>    Version to set
+
+OPTIONS:
+    -h, --help                   Print help information
+        --list-files             List files that would be updated
+        --print-sample-config    Print sample config file
+```
+
 To bump your versions to `1.2.3`, it is as simple as:
 
 ```shell script
@@ -51,12 +70,7 @@ git bump 1.2.3
 ```
 
 Well, maybe not quite that easy. If you do not have any configuration files
-yet, then you will be presented with an error:
-
-```text
-$ git bump 1.2.3
-Error: No valid config files found
-```
+yet, nothing will happen.
 
 For a first success, let's start with a very simple configuration file in the
 root of your Git repository. Name it `.git-bump.lua` (the leading `.` denotes
@@ -97,6 +111,55 @@ $ cat VERSION
 1.2.3
 ```
 
+To create a sample configuration file with several ready-to-use recipes, run:
+
+```shell script
+git bump --print-sample-config >.git-bump.lua
+```
+
+To print out a list of existing files that are configured in the config files
+and would be processed during bumping, run:
+
+```shell script
+git bump --list-files
+```
+
+## Hook Functions
+
+Along with the new contents for a specified file, one can also define hook
+functions that should be run *before* or *after* the new content is written to
+the file.
+
+The `pre_func` could be used, for example, to create a backup of the file
+prior to updating it. The `post_func` might be used to do some house keeping
+with modified config files.
+
+The hooks must be returned as a Lua table with the members `pre_func` and
+`post_func`. Both members are optional. If a hook function does not exist, it
+will be silently ignored.
+
+The following is a simple, imaginary example to demonstrate the usage of hook
+functions. For a proper example, take a look at the section [Sample
+Functions](#sample-functions).
+
+```lua
+return {
+    VERSION = function(version)
+        local os = require("os")
+
+        local pre_func = function()
+            os.execute("cp VERSION VERSION.old")
+        end
+
+        local post_func = function()
+            os.execute("git commit -m 'Update VERSION' VERSION")
+        end
+
+        return version, {pre_func = pre_func, post_func = post_func}
+    end
+}
+```
+
 ## Configuration File Locations
 
 The bump config files will be searched in the following locations:
@@ -115,13 +178,28 @@ The bump config files will be searched in the following locations:
 
 Those locations will be evaluated in order, a later file overrides mappings of
 the previous ones if they have matching keys. Missing config files will be
-silently ignored. However, all files missing results in an error, since
-`git-bump` needs at least one config file to do something.
+silently ignored.
+
+If you want to explicitly ignore a bumping function of a "higher"
+configuration, you must declare it in a "lower" config file like so:
+
+```lua
+return {
+    -- ...
+
+    ["dummy.txt"] = function(_, content)
+        -- no bumping, just return unaltered content
+        return content
+    end
+
+    -- ...
+}
+```
 
 ## Sample Functions
 
 Find the latest sample config file here: 
-https://github.com/FloGa/git-bump/blob/develop/.git-bump.lua
+<https://github.com/FloGa/git-bump/blob/develop/.git-bump.lua>
 
 This is a non-exhaustive list of possible functions that can be used in your
 config files. If you have ideas for more default functions, don't hesitate to

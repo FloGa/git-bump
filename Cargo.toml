@@ -1,16 +1,20 @@
 [package]
 name = "git-bump"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Florian Gamböck <mail@floga.de>"]
 edition = "2021"
 
 description = "Use Lua scripts to quickly bump versions in files."
 repository = "https://github.com/FloGa/git-bump"
 readme = "README.md"
-categories = ["cli", "git", "utility"]
+categories = ["command-line-utilities", "development-tools"]
+keywords = ["cli", "git", "utility"]
 license = "MIT"
 
+include = ["src/**/*", "LICENSE", "README.md", ".git-bump.lua"]
+
 [dependencies]
+clap = { version = "3.1.6", features = ["derive"] }
 git2 = { version = "0.14.2", default-features = false }
 home = "0.5.3"
 mlua = { version = "0.7", features = ["lua54", "vendored"] }
