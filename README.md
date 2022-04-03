@@ -38,6 +38,8 @@ cargo install git-bump
 
 ## Usage
 
+<!--% !cargo --quiet run -- --help | tail -n+5 %-->
+
 ```text
 USAGE:
     git-bump <VERSION|--print-sample-config>
