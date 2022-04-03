@@ -1,6 +1,6 @@
 use clap::{ArgGroup, Parser};
 
-use crate::{bump, print_sample_config, Result};
+use crate::{bump, list_files, print_sample_config, Result};
 
 #[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
@@ -9,12 +9,17 @@ use crate::{bump, print_sample_config, Result};
         .required(true)
         .args(&[
             "version",
+            "list-files",
             "print-sample-config",
         ]),
 ))]
 struct Cli {
     /// Version to set
     version: Option<String>,
+
+    #[clap(long)]
+    /// List files that would be updated
+    list_files: bool,
 
     #[clap(long)]
     /// Print sample config file
@@ -26,6 +31,8 @@ pub fn run() -> Result<()> {
 
     if let Some(version) = cli.version {
         bump(version)?
+    } else if cli.list_files {
+        list_files()?
     } else if cli.print_sample_config {
         print_sample_config()
     }
