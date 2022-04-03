@@ -42,6 +42,13 @@
     Cargo.toml. Not only will this validate the modified config, it will
     also update Cargo.lock accordingly.
 
+-   Add function to print out sample config
+
+-   Create method for printing file paths
+
+    This list will include absolute file paths of all files that will be
+    considered when bumping versions.
+
 # Changes in 0.1.0
 
 Initial release.
