@@ -49,6 +49,15 @@
     This list will include absolute file paths of all files that will be
     considered when bumping versions.
 
+-   Adjust README regarding missing config files
+
+    Previously, the README mentioned that it is an error if no configuration
+    files exist. This was true in the very beginning, but after a few
+    practical tests I came to the conclusion that missing configuration
+    files should not cause an error, but just be silently ignored. This will
+    be better for automation scripts that might run on many repositories,
+    including those without any bump configurations.
+
 # Changes in 0.1.0
 
 Initial release.
