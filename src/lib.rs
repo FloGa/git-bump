@@ -183,9 +183,11 @@
 
 use std::collections::HashMap;
 use std::fs;
+use std::ops::Deref;
 
 use mlua::prelude::*;
 
+use crate::state::State as BumpState;
 pub use crate::{cli::run, error::Error, error::Result};
 
 mod cli;
@@ -193,50 +195,13 @@ mod error;
 mod state;
 
 fn bump(version: String) -> Result<()> {
-    let repository = git2::Repository::discover(".").map_err(|_| Error::NotARepository)?;
+    let mut bump_state = BumpState::default();
 
-    let workdir = repository
-        .workdir()
-        .ok_or_else(|| Error::BareRepositoryNotSupported)?;
+    let map = bump_state.get_file_mapping()?;
 
-    let bump_configs = {
-        let config_user =
-            home::home_dir().and_then(|p| p.join(".git-bump.lua").canonicalize().ok());
-        let config_repo_unshared = repository.path().join("git-bump.lua").canonicalize().ok();
-        let config_repo_shared = workdir.join(".git-bump.lua").canonicalize().ok();
-
-        [config_user, config_repo_unshared, config_repo_shared]
-            .into_iter()
-            .flatten()
-            .collect::<Vec<_>>()
-    };
-
-    if bump_configs.is_empty() {
-        return Ok(());
-    }
-
-    let lua = Lua::new();
-
-    let mut map = HashMap::new();
-    for config in bump_configs {
-        let content = fs::read_to_string(config);
-        let chunk = match content {
-            Ok(content) => lua.load(&content).eval::<HashMap<String, LuaFunction>>(),
-            Err(_) => continue,
-        }
-        .map_err(|source| Error::LuaLoadingFailed { source })?;
-
-        for (file, func) in chunk {
-            map.insert(file, func);
-        }
-    }
-
-    for (file, f) in map {
-        let file = workdir.join(file);
-
-        if !file.exists() {
-            continue;
-        }
+    let lua = bump_state.get_lua();
+    for (file, f) in map.deref() {
+        let f = lua.registry_value::<LuaFunction>(f)?;
 
         let contents = fs::read_to_string(&file).map_err(|source| Error::ReadFailed { source })?;
 
