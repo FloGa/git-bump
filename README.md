@@ -1,5 +1,9 @@
 # git-bump
 
+![Crates.io](https://img.shields.io/crates/v/git-bump)
+![docs.rs](https://img.shields.io/docsrs/git-bump)
+![Crates.io](https://img.shields.io/crates/l/git-bump)
+
 Consistently bump your version numbers with Lua scripts.
 
 ## Motivation
