@@ -66,12 +66,7 @@ git bump 1.2.3
 ```
 
 Well, maybe not quite that easy. If you do not have any configuration files
-yet, then you will be presented with an error:
-
-```text
-$ git bump 1.2.3
-Error: No valid config files found
-```
+yet, nothing will happen.
 
 For a first success, let's start with a very simple configuration file in the
 root of your Git repository. Name it `.git-bump.lua` (the leading `.` denotes
@@ -179,8 +174,7 @@ The bump config files will be searched in the following locations:
 
 Those locations will be evaluated in order, a later file overrides mappings of
 the previous ones if they have matching keys. Missing config files will be
-silently ignored. However, all files missing results in an error, since
-`git-bump` needs at least one config file to do something.
+silently ignored.
 
 ## Sample Functions
 
