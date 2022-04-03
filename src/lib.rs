@@ -194,6 +194,7 @@ mod cli;
 mod error;
 mod state;
 
+/// Bump files to a given version.
 fn bump(version: String) -> Result<()> {
     let mut bump_state = BumpState::default();
 
@@ -234,6 +235,7 @@ fn bump(version: String) -> Result<()> {
     Ok(())
 }
 
+/// Print file paths that would be bumped.
 fn list_files() -> Result<()> {
     let mut bump_state = BumpState::default();
 
@@ -249,6 +251,7 @@ fn list_files() -> Result<()> {
     Ok(())
 }
 
+/// Print sample `git-bump.lua`.
 fn print_sample_config() {
     println!("{}", include_str!("../.git-bump.lua"))
 }
