@@ -174,6 +174,22 @@
 //! the previous ones if they have matching keys. Missing config files will be
 //! silently ignored.
 //!
+//! If you want to explicitly ignore a bumping function of a "higher"
+//! configuration, you must declare it in a "lower" config file like so:
+//!
+//! ```lua
+//! return {
+//!     -- ...
+//!
+//!     ["dummy.txt"] = function(_, content)
+//!         -- no bumping, just return unaltered content
+//!         return content
+//!     end
+//!
+//!     -- ...
+//! }
+//! ```
+//!
 //! ## Sample Functions
 //!
 //! Find the latest sample config file here:
