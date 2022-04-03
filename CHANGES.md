@@ -1,3 +1,5 @@
+# Changes since latest release
+
 # Changes in 0.2.0
 
 -   Add two additional errors for hooks
