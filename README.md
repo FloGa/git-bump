@@ -117,6 +117,13 @@ To create a sample configuration file with several ready-to-use recipes, run:
 git bump --print-sample-config >.git-bump.lua
 ```
 
+To print out a list of existing files that are configured in the config files
+and would be processed during bumping, run:
+
+```shell script
+git bump --list-files
+```
+
 ## Hook Functions
 
 Along with the new contents for a specified file, one can also define hook
