@@ -7,8 +7,6 @@ pub enum Error {
     NotARepository,
     #[error("Not supported on bare repositories")]
     BareRepositoryNotSupported,
-    #[error("No valid config files found")]
-    NoValidConfigFound,
     #[error("Failed to load Lua code: {source}")]
     LuaLoadingFailed { source: mlua::Error },
     #[error("Failed to execute Lua code: {source}")]
