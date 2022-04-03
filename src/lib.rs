@@ -234,6 +234,21 @@ fn bump(version: String) -> Result<()> {
     Ok(())
 }
 
+fn list_files() -> Result<()> {
+    let mut bump_state = BumpState::default();
+
+    let map = bump_state.get_file_mapping()?;
+
+    let mut keys = map.deref().keys().collect::<Vec<_>>();
+    keys.sort();
+
+    for file in keys {
+        println!("{}", file.to_string_lossy());
+    }
+
+    Ok(())
+}
+
 fn print_sample_config() {
     println!("{}", include_str!("../.git-bump.lua"))
 }
