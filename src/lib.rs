@@ -190,6 +190,7 @@ pub use crate::{cli::run, error::Error, error::Result};
 
 mod cli;
 mod error;
+mod state;
 
 fn bump(version: String) -> Result<()> {
     let repository = git2::Repository::discover(".").map_err(|_| Error::NotARepository)?;
