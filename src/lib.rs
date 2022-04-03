@@ -40,13 +40,14 @@
 //!
 //! ```text
 //! USAGE:
-//!     git-bump <VERSION|--print-sample-config>
+//!     git-bump <VERSION|--list-files|--print-sample-config>
 //!
 //! ARGS:
 //!     <VERSION>    Version to set
 //!
 //! OPTIONS:
 //!     -h, --help                   Print help information
+//!         --list-files             List files that would be updated
 //!         --print-sample-config    Print sample config file
 //! ```
 //!
@@ -113,6 +114,13 @@
 //!
 //! ```shell script
 //! git bump --print-sample-config >.git-bump.lua
+//! ```
+//!
+//! To print out a list of existing files that are configured in the config files
+//! and would be processed during bumping, run:
+//!
+//! ```shell script
+//! git bump --list-files
 //! ```
 //!
 //! ## Hook Functions

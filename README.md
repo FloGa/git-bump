@@ -42,13 +42,14 @@ cargo install git-bump
 
 ```text
 USAGE:
-    git-bump <VERSION|--print-sample-config>
+    git-bump <VERSION|--list-files|--print-sample-config>
 
 ARGS:
     <VERSION>    Version to set
 
 OPTIONS:
     -h, --help                   Print help information
+        --list-files             List files that would be updated
         --print-sample-config    Print sample config file
 ```
 
