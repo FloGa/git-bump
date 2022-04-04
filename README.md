@@ -1,13 +1,16 @@
 # git-bump
 
+[![badge github]][url github]
 [![badge crates.io]][url crates.io]
 [![badge docs.rs]][url docs.rs]
 [![badge license]][url license]
 
+[badge github]: https://img.shields.io/badge/github-FloGa%2Fgit--bump-green
 [badge crates.io]: https://img.shields.io/crates/v/git-bump
 [badge docs.rs]: https://img.shields.io/docsrs/git-bump
 [badge license]: https://img.shields.io/crates/l/git-bump
 
+[url github]: https://github.com/FloGa/git-bump
 [url crates.io]: https://crates.io/crates/git-bump
 [url docs.rs]: https://docs.rs/git-bump
 [url license]: https://github.com/FloGa/git-bump/blob/develop/LICENSE
