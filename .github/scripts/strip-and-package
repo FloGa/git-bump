@@ -1,0 +1,50 @@
+#!/bin/bash
+
+pushd "target/$MATRIX_TARGET/release" || exit 1
+
+bin_files=()
+while read -r file; do
+    # Workaround for proper newline handling in windows
+    file=${file%#*}
+
+    if [ "$file" ]; then
+        bin_files+=("$file")
+    fi
+done < <(
+    cargo metadata --format-version=1 --no-deps |
+        jq -r '.packages[].targets | map(select(.kind[0] == "bin").name + "#")[]'
+)
+
+if [ "$MATRIX_OS" = windows-latest ]; then
+    bin_files=("${bin_files[@]/%/.exe}")
+    name_archive="$BINARY_NAME-$MATRIX_TARGET.zip"
+    cmd_archive=(7z a)
+else
+    name_archive="$BINARY_NAME-$MATRIX_TARGET.tar.gz"
+    cmd_archive=(tar cavpf)
+fi
+
+case "$MATRIX_TARGET" in
+    aarch64-*-linux-gnu)
+        sudo apt-get -y update
+        sudo apt-get -y install gcc-aarch64-linux-gnu
+        strip_exe="aarch64-linux-gnu-strip"
+        ;;
+    arm-*-linux-gnueabihf)
+        sudo apt-get -y update
+        sudo apt-get -y install gcc-arm-linux-gnueabihf
+        strip_exe="arm-linux-gnueabihf-strip"
+        ;;
+    *)
+        strip_exe="strip"
+        ;;
+esac
+
+echo
+printf '%s\n' "Binaries:" "${bin_files[@]}"
+echo
+
+"$strip_exe" "${bin_files[@]}"
+"${cmd_archive[@]}" ../../../"$name_archive" "${bin_files[@]}"
+
+echo "::set-output name=name_archive::$name_archive"
