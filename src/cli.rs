@@ -26,7 +26,7 @@ struct Cli {
     print_sample_config: bool,
 }
 
-pub fn run() -> Result<()> {
+pub(crate) fn run() -> Result<()> {
     let cli = Cli::parse();
 
     if let Some(version) = cli.version {

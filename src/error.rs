@@ -1,8 +1,8 @@
-pub type Result<T> = std::result::Result<T, Error>;
+pub(crate) type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Debug, thiserror::Error)]
 #[non_exhaustive]
-pub enum Error {
+pub(crate) enum Error {
     #[error("Not a Git repository")]
     NotARepository,
     #[error("Not supported on bare repositories")]
