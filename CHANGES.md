@@ -1,5 +1,10 @@
 # Changes since latest release
 
+-   Convert application into binary only
+
+    There is no actual library code that could be shared, so let's stay with
+    the main.rs and ditch the lib.rs for now.
+
 # Changes in 0.2.0
 
 -   Add two additional errors for hooks
