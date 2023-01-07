@@ -53,19 +53,19 @@ cargo install git-bump
 
 ## Usage
 
-<!--% !cargo --quiet run -- --help | tail -n+5 %-->
+<!--% !cargo --quiet run -- --help | tail -n+3 %-->
 
 ```text
-USAGE:
-    git-bump <VERSION|--list-files|--print-sample-config>
+Usage: git-bump <NEW_VERSION|--list-files|--print-sample-config>
 
-ARGS:
-    <VERSION>    Version to set
+Arguments:
+  [NEW_VERSION]  Version to set
 
-OPTIONS:
-    -h, --help                   Print help information
-        --list-files             List files that would be updated
-        --print-sample-config    Print sample config file
+Options:
+      --list-files           List files that would be updated
+      --print-sample-config  Print sample config file
+  -h, --help                 Print help information
+  -V, --version              Print version information
 ```
 
 To bump your versions to `1.2.3`, it is as simple as:
