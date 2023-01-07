@@ -14,7 +14,7 @@ license = "MIT"
 include = ["src/**/*", "LICENSE", "README.md", ".git-bump.lua"]
 
 [dependencies]
-clap = { version = "3.1.6", features = ["derive"] }
+clap = { version = "4.0.32", features = ["derive"] }
 git2 = { version = "0.15.0", default-features = false }
 home = "0.5.3"
 mlua = { version = "0.8.7", features = ["lua54", "vendored"] }

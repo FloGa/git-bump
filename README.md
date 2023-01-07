@@ -53,7 +53,7 @@ cargo install git-bump
 
 ## Usage
 
-<!--% !cargo --quiet run -- --help | tail -n+5 %-->
+<!--% !cargo --quiet run -- --help | tail -n+3 %-->
 
 ```text
 USAGE:
