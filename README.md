@@ -48,8 +48,15 @@ global version bump functions that can be used in each repository.
 `git-bump` can be installed easily through Cargo via `crates.io`:
 
 ```shell script
-cargo install git-bump
+cargo install --locked git-bump
 ```
+
+Please note that the `--locked` flag is necessary here to have the exact same
+dependencies as when the application was tagged and tested. Without it, you
+might get more up-to-date versions of dependencies, but you have the risk of
+undefined and unexpected behavior if the dependencies changed some
+functionalities. The application might even fail to build if the public API of
+a dependency changed too much.
 
 ## Usage
 
