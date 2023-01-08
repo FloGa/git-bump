@@ -58,6 +58,11 @@ undefined and unexpected behavior if the dependencies changed some
 functionalities. The application might even fail to build if the public API of
 a dependency changed too much.
 
+Alternatively, pre-built binaries can be downloaded from the [GitHub
+releases][gh-releases] page.
+
+[gh-releases]: https://github.com/FloGa/git-bump/releases
+
 ## Usage
 
 <!--% !cargo --quiet run -- --help | tail -n+3 %-->
