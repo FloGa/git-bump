@@ -48,8 +48,15 @@ global version bump functions that can be used in each repository.
 `git-bump` can be installed easily through Cargo via `crates.io`:
 
 ```shell script
-cargo install git-bump
+cargo install --locked git-bump
 ```
+
+Please note that the `--locked` flag is necessary here to have the exact same
+dependencies as when the application was tagged and tested. Without it, you
+might get more up-to-date versions of dependencies, but you have the risk of
+undefined and unexpected behavior if the dependencies changed some
+functionalities. The application might even fail to build if the public API of
+a dependency changed too much.
 
 ## Usage
 
@@ -67,6 +74,10 @@ Options:
   -h, --help                 Print help information
   -V, --version              Print version information
 ```
+
+The following examples require that `git-bump` is accessible from your current
+shell, so ensure that the executable lies in a directory that is part of your
+`$PATH` (Linux and MacOS) or `%PATH%` (Windows) variable.
 
 To bump your versions to `1.2.3`, it is as simple as:
 
