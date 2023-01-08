@@ -75,6 +75,10 @@ Options:
   -V, --version              Print version information
 ```
 
+The following examples require that `git-bump` is accessible from your current
+shell, so ensure that the executable lies in a directory that is part of your
+`$PATH` (Linux and MacOS) or `%PATH%` (Windows) variable.
+
 To bump your versions to `1.2.3`, it is as simple as:
 
 ```shell script
