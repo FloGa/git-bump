@@ -69,8 +69,8 @@
 //! Options:
 //!       --list-files           List files that would be updated
 //!       --print-sample-config  Print sample config file
-//!   -h, --help                 Print help information
-//!   -V, --version              Print version information
+//!   -h, --help                 Print help
+//!   -V, --version              Print version
 //! ```
 //!
 //! The following examples require that `git-bump` is accessible from your current
