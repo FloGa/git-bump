@@ -1,5 +1,0 @@
-#!/bin/bash
-
-for file in "$BINARY_NAME"-*/"$BINARY_NAME"-*; do
-    sha256sum "$file" | awk '{print $1}' >"$file.sha256"
-done

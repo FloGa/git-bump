@@ -3,132 +3,22 @@ name: Release
 on:
   push:
     branches:
-      - hotfix/*
-      - release/*
-    tags:
-      - "*"
+      - 'hotfix/**'
+      - 'release/**'
+    tags-ignore:
+      - '_**'
+
+  workflow_dispatch:
 
 jobs:
   test:
     uses: ./.github/workflows/test.yml
 
-  build:
-    name: Build release binaries
+  call-release-workflow:
+    uses: FloGa/rust-workflows/.github/workflows/release.yml@0.1.1
+    with:
+      targets-config: ./.github/targets.json
+    secrets:
+      CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
     needs:
       - test
-    strategy:
-      matrix:
-        include:
-          - { os: ubuntu-latest, target: aarch64-unknown-linux-gnu }
-          - { os: ubuntu-latest, target: arm-unknown-linux-gnueabihf }
-          - { os: ubuntu-latest, target: i686-unknown-linux-gnu }
-          - { os: ubuntu-latest, target: i686-unknown-linux-musl }
-          - { os: ubuntu-latest, target: x86_64-unknown-linux-gnu }
-          - { os: ubuntu-latest, target: x86_64-unknown-linux-musl }
-
-          - { os: macos-latest, target: x86_64-apple-darwin }
-
-          - { os: windows-latest, target: i686-pc-windows-msvc }
-          - { os: windows-latest, target: x86_64-pc-windows-msvc }
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Set environment
-        shell: bash
-        run: |
-          cat ./.github/env >>"$GITHUB_ENV"
-
-      - name: Setup Rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-          profile: minimal
-          target: ${{ matrix.target }}
-
-      - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v1
-
-      - name: Build release
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release --locked --target ${{ matrix.target }}
-          use-cross: ${{ matrix.os == 'ubuntu-latest' }}
-
-      - name: Strip and package artifacts
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        id: package
-        shell: bash
-        env:
-          MATRIX_TARGET: ${{ matrix.target }}
-          MATRIX_OS: ${{ matrix.os }}
-        run: ./.github/scripts/strip-and-package
-
-      - name: Upload artifacts
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ steps.package.outputs.name_archive }}
-          path: ${{ steps.package.outputs.name_archive }}
-
-  github_release:
-    name: Create GitHub release
-    if: ${{ startsWith(github.ref, 'refs/tags/') }}
-    needs:
-      - build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Set environment
-        run: |
-          cat ./.github/env >>"$GITHUB_ENV"
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-
-      - name: Create checksums
-        run: ./.github/scripts/create-checksums
-
-      - name: Create release notes
-        run: |
-          ./.github/scripts/changelog-of-version \
-            "$(git describe --tags --abbrev=0)" \
-            >RELEASE.md
-
-      - name: Create release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: ${{ env.BINARY_NAME }}-*/${{ env.BINARY_NAME }}-*
-          body_path: RELEASE.md
-          draft: true
-
-  cargo_publish:
-    name: Publish package to creates.io
-    if: ${{ startsWith(github.ref, 'refs/tags/') }}
-    needs:
-      - test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-          override: true
-
-      - name: Publish package
-        run: cargo publish --token '${{ secrets.CRATES_IO_TOKEN }}'
