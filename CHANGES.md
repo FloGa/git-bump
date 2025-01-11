@@ -5,6 +5,10 @@
     There is no actual library code that could be shared, so let's stay with
     the main.rs and ditch the lib.rs for now.
 
+-   Update README
+
+-   Update dependencies
+
 # Changes in 0.2.0
 
 -   Add two additional errors for hooks
