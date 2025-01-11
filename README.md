@@ -1,8 +1,19 @@
 # git-bump
 
-![Crates.io](https://img.shields.io/crates/v/git-bump)
-![docs.rs](https://img.shields.io/docsrs/git-bump)
-![Crates.io](https://img.shields.io/crates/l/git-bump)
+[![badge github]][url github]
+[![badge crates.io]][url crates.io]
+[![badge docs.rs]][url docs.rs]
+[![badge license]][url license]
+
+[badge github]: https://img.shields.io/badge/github-FloGa%2Fgit--bump-green
+[badge crates.io]: https://img.shields.io/crates/v/git-bump
+[badge docs.rs]: https://img.shields.io/docsrs/git-bump
+[badge license]: https://img.shields.io/crates/l/git-bump
+
+[url github]: https://github.com/FloGa/git-bump
+[url crates.io]: https://crates.io/crates/git-bump
+[url docs.rs]: https://docs.rs/git-bump
+[url license]: https://github.com/FloGa/git-bump/blob/develop/LICENSE
 
 Consistently bump your version numbers with Lua scripts.
 
@@ -37,25 +48,41 @@ global version bump functions that can be used in each repository.
 `git-bump` can be installed easily through Cargo via `crates.io`:
 
 ```shell script
-cargo install git-bump
+cargo install --locked git-bump
 ```
+
+Please note that the `--locked` flag is necessary here to have the exact same
+dependencies as when the application was tagged and tested. Without it, you
+might get more up-to-date versions of dependencies, but you have the risk of
+undefined and unexpected behavior if the dependencies changed some
+functionalities. The application might even fail to build if the public API of
+a dependency changed too much.
+
+Alternatively, pre-built binaries can be downloaded from the [GitHub
+releases][gh-releases] page.
+
+[gh-releases]: https://github.com/FloGa/git-bump/releases
 
 ## Usage
 
-<!--% !cargo --quiet run -- --help | tail -n+5 %-->
+<!--% !cargo --quiet run -- --help | tail -n+3 %-->
 
 ```text
-USAGE:
-    git-bump <VERSION|--list-files|--print-sample-config>
+Usage: git-bump <NEW_VERSION|--list-files|--print-sample-config>
 
-ARGS:
-    <VERSION>    Version to set
+Arguments:
+  [NEW_VERSION]  Version to set
 
-OPTIONS:
-    -h, --help                   Print help information
-        --list-files             List files that would be updated
-        --print-sample-config    Print sample config file
+Options:
+      --list-files           List files that would be updated
+      --print-sample-config  Print sample config file
+  -h, --help                 Print help
+  -V, --version              Print version
 ```
+
+The following examples require that `git-bump` is accessible from your current
+shell, so ensure that the executable lies in a directory that is part of your
+`$PATH` (Linux and MacOS) or `%PATH%` (Windows) variable.
 
 To bump your versions to `1.2.3`, it is as simple as:
 

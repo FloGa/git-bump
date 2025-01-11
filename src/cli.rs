@@ -8,14 +8,14 @@ use crate::{bump, list_files, print_sample_config, Result};
     ArgGroup::new("action")
         .required(true)
         .args(&[
-            "version",
-            "list-files",
-            "print-sample-config",
+            "new_version",
+            "list_files",
+            "print_sample_config",
         ]),
 ))]
 struct Cli {
     /// Version to set
-    version: Option<String>,
+    new_version: Option<String>,
 
     #[clap(long)]
     /// List files that would be updated
@@ -26,10 +26,10 @@ struct Cli {
     print_sample_config: bool,
 }
 
-pub fn run() -> Result<()> {
+pub(crate) fn run() -> Result<()> {
     let cli = Cli::parse();
 
-    if let Some(version) = cli.version {
+    if let Some(version) = cli.new_version {
         bump(version)?
     } else if cli.list_files {
         list_files()?
