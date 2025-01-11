@@ -265,7 +265,7 @@ fn bump(version: String) -> Result<()> {
         if let Some(hooks) = &hooks {
             if let Some(pre_func) = hooks.get("pre_func") {
                 pre_func
-                    .call(())
+                    .call::<_, ()>(())
                     .map_err(|source| Error::LuaPreFuncFailed { source })?;
             }
         }
@@ -275,7 +275,7 @@ fn bump(version: String) -> Result<()> {
         if let Some(hooks) = &hooks {
             if let Some(post_func) = hooks.get("post_func") {
                 post_func
-                    .call(())
+                    .call::<_, ()>(())
                     .map_err(|source| Error::LuaPostFuncFailed { source })?;
             }
         }
