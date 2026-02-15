@@ -1,5 +1,13 @@
 # Changes since latest release
 
+-   Update dependencies
+
+-   Update git2 to 0.20.4
+
+-   Update mlua to 0.11.6
+
+-   Update thiserror to 2.0.18
+
 # Changes in 0.3.0
 
 -   Convert application into binary only
