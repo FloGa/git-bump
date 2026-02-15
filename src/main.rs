@@ -256,7 +256,7 @@ fn bump(version: String) -> Result<()> {
         let contents = fs::read_to_string(&file).map_err(|source| Error::ReadFailed { source })?;
 
         let (mut contents, hooks) = f
-            .call::<_, (String, Option<HashMap<String, LuaFunction>>)>((version.clone(), contents))
+            .call::<(String, Option<HashMap<String, LuaFunction>>)>((version.clone(), contents))
             .map_err(|source| Error::LuaExecutionFailed { source })?;
         if !contents.ends_with('\n') {
             contents.push('\n')
@@ -265,7 +265,7 @@ fn bump(version: String) -> Result<()> {
         if let Some(hooks) = &hooks {
             if let Some(pre_func) = hooks.get("pre_func") {
                 pre_func
-                    .call::<_, ()>(())
+                    .call::<()>(())
                     .map_err(|source| Error::LuaPreFuncFailed { source })?;
             }
         }
@@ -275,7 +275,7 @@ fn bump(version: String) -> Result<()> {
         if let Some(hooks) = &hooks {
             if let Some(post_func) = hooks.get("post_func") {
                 post_func
-                    .call::<_, ()>(())
+                    .call::<()>(())
                     .map_err(|source| Error::LuaPostFuncFailed { source })?;
             }
         }
