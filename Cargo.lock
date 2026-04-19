@@ -184,7 +184,7 @@ dependencies = [
 
 [[package]]
 name = "git-bump"
-version = "0.3.2-RC"
+version = "0.3.2"
 dependencies = [
  "clap",
  "git2",
