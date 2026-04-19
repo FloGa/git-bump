@@ -1,3 +1,7 @@
+# Changes in 0.3.2
+
+-   Update dependencies
+
 # Changes in 0.3.1
 
 -   Update dependencies
