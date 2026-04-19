@@ -1,3 +1,5 @@
+# Changes in 0.3.2-RC
+
 # Changes in 0.3.1
 
 -   Update dependencies
